@@ -46,7 +46,7 @@ when 'start'
     status_text: '',
     status_expiration: 0, # clear
   )
-  set_status_back
+  # set_status_back
 when 'lunch'
   set_status(
     status_emoji: ':lunch:',
@@ -59,7 +59,7 @@ when 'finish'
     status_text: 'マスタカ準備中',
     status_expiration: 0, # clear
   )
-  set_status_away
+  # set_status_away
 else
   puts 'Usage: slack.rb {start | lunch | finish }'
   exit 1
