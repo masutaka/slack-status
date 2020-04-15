@@ -56,7 +56,7 @@ when 'lunch'
 when 'finish'
   set_status(
     status_emoji: ':taisya:',
-    status_text: '準備中',
+    status_text: 'マスタカ準備中',
     status_expiration: 0, # clear
   )
   set_status_away
