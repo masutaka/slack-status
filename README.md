@@ -8,7 +8,7 @@ I used https://github.com/rydama/slack-status as a great reference.
 
 ```
 $ ./slack.rb
-Usage: slack.rb {start | lunch | finish }
+Usage: slack.rb { start | lunch | finish }
 ```
 
 ## Installation

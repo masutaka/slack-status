@@ -5,7 +5,7 @@ require 'json'
 
 command = ARGV[0]
 if command.nil?
-  puts 'Usage: slack.rb {start | lunch | finish }'
+  puts 'Usage: slack.rb { start | lunch | finish }'
   exit 1
 end
 
@@ -61,6 +61,6 @@ when 'finish'
   )
   # set_status_away
 else
-  puts 'Usage: slack.rb {start | lunch | finish }'
+  puts 'Usage: slack.rb { start | lunch | finish }'
   exit 1
 end
