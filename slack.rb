@@ -21,6 +21,8 @@ if token.nil?
   exit 1
 end
 
+SLACK_FINISH_TEXT = ENV['SLACK_FINISH_TEXT']
+
 JOBCAN_CHANNEL_ID = ENV['JOBCAN_CHANNEL_ID']
 if JOBCAN_CHANNEL_ID.nil?
   puts 'JOBCAN_CHANNEL_ID must be defined in the environment'
@@ -76,7 +78,7 @@ when 'lunch'
 when 'finish'
   set_status(
     status_emoji: ':taisya:',
-    status_text: 'マスタカ準備中',
+    status_text: SLACK_FINISH_TEXT,
     status_expiration: 0, # clear
   )
   # set_status_away
