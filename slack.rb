@@ -44,7 +44,7 @@ SET_PROFILE_URL = "#{SLACK_API_ROOT}/users.profile.set?token=#{token}"
 # See https://github.com/slack-ruby/slack-api-ref/blob/master/methods/undocumented/chat/chat.command.json
 CHAT_COMMAND_URL = "#{SLACK_API_ROOT}/chat.command?token=#{token}"
 
-def set_status(profile)
+def slack_set_status(profile)
   Net::HTTP.post_form(URI.parse(SET_PROFILE_URL), profile: profile.to_json)
 end
 
@@ -67,20 +67,20 @@ end
 
 case ARGV[0]
 when 'start'
-  set_status(
+  slack_set_status(
     status_emoji: SLACK_START_EMOJI,
     status_text: SLACK_START_TEXT,
     status_expiration: slack_status_expiration(SLACK_START_EXPIRE_MINUTES),
   )
   jobcan_touch
 when 'lunch'
-  set_status(
+  slack_set_status(
     status_emoji: SLACK_LUNCH_EMOJI,
     status_text: SLACK_LUNCH_TEXT,
     status_expiration: slack_status_expiration(SLACK_LUNCH_EXPIRE_MINUTES),
   )
 when 'finish'
-  set_status(
+  slack_set_status(
     status_emoji: SLACK_FINISH_EMOJI,
     status_text: SLACK_FINISH_TEXT,
     status_expiration: slack_status_expiration(SLACK_FINISH_EXPIRE_MINUTES),
