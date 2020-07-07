@@ -38,10 +38,7 @@ if JOBCAN_CHANNEL_ID.nil?
 end
 
 SLACK_API_ROOT="#{slack_url}/api"
-
 SET_PROFILE_URL = "#{SLACK_API_ROOT}/users.profile.set?token=#{token}"
-AWAY_URL = "#{SLACK_API_ROOT}/users.setPresence?presence=away&token=#{token}"
-BACK_URL = "#{SLACK_API_ROOT}/users.setPresence?presence=auto&token=#{token}"
 
 # Undocumented API
 # See https://github.com/slack-ruby/slack-api-ref/blob/master/methods/undocumented/chat/chat.command.json
@@ -57,14 +54,6 @@ end
 def slack_status_expiration(minutes)
   m = minutes.to_i
   m == 0 ? 0 : (Time.now + m*60).to_i
-end
-
-def set_status_back
-  Net::HTTP.post_form(URI.parse(BACK_URL), {})
-end
-
-def set_status_away
-  Net::HTTP.post_form(URI.parse(AWAY_URL), {})
 end
 
 def jobcan_touch
@@ -83,7 +72,6 @@ when 'start'
     status_text: SLACK_START_TEXT,
     status_expiration: slack_status_expiration(SLACK_START_EXPIRE_MINUTES),
   )
-  # set_status_back
   jobcan_touch
 when 'lunch'
   set_status(
@@ -97,7 +85,6 @@ when 'finish'
     status_text: SLACK_FINISH_TEXT,
     status_expiration: slack_status_expiration(SLACK_FINISH_EXPIRE_MINUTES),
   )
-  # set_status_away
   jobcan_touch
 else
   puts 'Usage: slack.rb { start | lunch | finish }'
