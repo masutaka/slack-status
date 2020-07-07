@@ -38,15 +38,15 @@ if JOBCAN_CHANNEL_ID.nil?
 end
 
 SLACK_API_ROOT = "#{slack_url}/api"
-SET_PROFILE_URL = "#{SLACK_API_ROOT}/users.profile.set?token=#{token}"
-SET_DND_URL = "#{SLACK_API_ROOT}/dnd.setSnooze?token=#{token}"
+SLACK_SET_PROFILE_URL = "#{SLACK_API_ROOT}/users.profile.set?token=#{token}"
+SLACK_SET_DND_URL = "#{SLACK_API_ROOT}/dnd.setSnooze?token=#{token}"
 
 # Undocumented API
 # See https://github.com/slack-ruby/slack-api-ref/blob/master/methods/undocumented/chat/chat.command.json
-CHAT_COMMAND_URL = "#{SLACK_API_ROOT}/chat.command?token=#{token}"
+SLACK_CHAT_COMMAND_URL = "#{SLACK_API_ROOT}/chat.command?token=#{token}"
 
 def slack_set_status(profile)
-  Net::HTTP.post_form(URI.parse(SET_PROFILE_URL), profile: profile.to_json)
+  Net::HTTP.post_form(URI.parse(SLACK_SET_PROFILE_URL), profile: profile.to_json)
 end
 
 # Get slack status_expiration
@@ -64,12 +64,12 @@ end
 def slack_set_dnd(now)
   target = (now.to_date + 1).to_time + 9*60*60 # AM9:00 on tomorrow
   num_minutes = ((target - now) / 60).to_i     # sub minutes
-  Net::HTTP.post_form(URI.parse(SET_DND_URL), num_minutes: num_minutes)
+  Net::HTTP.post_form(URI.parse(SLACK_SET_DND_URL), num_minutes: num_minutes)
 end
 
 def jobcan_touch
   Net::HTTP.post_form(
-    URI.parse(CHAT_COMMAND_URL),
+    URI.parse(SLACK_CHAT_COMMAND_URL),
     channel: JOBCAN_CHANNEL_ID, # It's NOT channel name.
     command: '/jobcan_touch',
     as_user: true,
