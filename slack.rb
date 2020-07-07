@@ -1,7 +1,8 @@
 #!/usr/bin/env ruby
 
-require 'net/http'
+require 'date'
 require 'json'
+require 'net/http'
 
 command = ARGV[0]
 if command.nil?
