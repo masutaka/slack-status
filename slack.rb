@@ -15,18 +15,26 @@ if slack_url.nil?
   exit 1
 end
 
-token = ENV['SLACK_TOKEN']
-if token.nil?
+SLACK_TOKEN = ENV['SLACK_TOKEN']
+if SLACK_TOKEN.nil?
   puts 'SLACK_TOKEN must be defined in the environment'
+  exit 1
+end
+
+SLACK_LEGACY_TOKEN = ENV['SLACK_LEGACY_TOKEN']
+if SLACK_LEGACY_TOKEN.nil?
+  puts 'SLACK_LEGACY_TOKEN must be defined in the environment'
   exit 1
 end
 
 SLACK_START_EMOJI = ENV['SLACK_START_EMOJI']
 SLACK_START_TEXT = ENV['SLACK_START_TEXT']
 SLACK_START_EXPIRE_MINUTES = ENV['SLACK_START_EXPIRE_MINUTES']
+
 SLACK_LUNCH_EMOJI = ENV['SLACK_LUNCH_EMOJI']
 SLACK_LUNCH_TEXT = ENV['SLACK_LUNCH_TEXT']
 SLACK_LUNCH_EXPIRE_MINUTES = ENV['SLACK_LUNCH_EXPIRE_MINUTES']
+
 SLACK_FINISH_EMOJI = ENV['SLACK_FINISH_EMOJI']
 SLACK_FINISH_TEXT = ENV['SLACK_FINISH_TEXT']
 SLACK_FINISH_EXPIRE_MINUTES = ENV['SLACK_FINISH_EXPIRE_MINUTES']
@@ -38,12 +46,12 @@ if JOBCAN_CHANNEL_ID.nil?
 end
 
 SLACK_API_ROOT = "#{slack_url}/api"
-SLACK_SET_PROFILE_URL = "#{SLACK_API_ROOT}/users.profile.set?token=#{token}"
-SLACK_SET_DND_URL = "#{SLACK_API_ROOT}/dnd.setSnooze?token=#{token}"
+SLACK_SET_PROFILE_URL = "#{SLACK_API_ROOT}/users.profile.set?token=#{SLACK_TOKEN}"
+SLACK_SET_DND_URL = "#{SLACK_API_ROOT}/dnd.setSnooze?token=#{SLACK_TOKEN}"
 
 # Undocumented API
 # See https://github.com/slack-ruby/slack-api-ref/blob/master/methods/undocumented/chat/chat.command.json
-SLACK_CHAT_COMMAND_URL = "#{SLACK_API_ROOT}/chat.command?token=#{token}"
+SLACK_CHAT_COMMAND_URL = "#{SLACK_API_ROOT}/chat.command?token=#{SLACK_LEGACY_TOKEN}"
 
 def slack_set_status(profile)
   Net::HTTP.post_form(URI.parse(SLACK_SET_PROFILE_URL), profile: profile.to_json)
