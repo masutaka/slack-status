@@ -21,7 +21,15 @@ if token.nil?
   exit 1
 end
 
+SLACK_START_EMOJI = ENV['SLACK_START_EMOJI']
+SLACK_START_TEXT = ENV['SLACK_START_TEXT']
+SLACK_START_EXPIRE_MINUTES = ENV['SLACK_START_EXPIRE_MINUTES']
+SLACK_LUNCH_EMOJI = ENV['SLACK_LUNCH_EMOJI']
+SLACK_LUNCH_TEXT = ENV['SLACK_LUNCH_TEXT']
+SLACK_LUNCH_EXPIRE_MINUTES = ENV['SLACK_LUNCH_EXPIRE_MINUTES']
+SLACK_FINISH_EMOJI = ENV['SLACK_FINISH_EMOJI']
 SLACK_FINISH_TEXT = ENV['SLACK_FINISH_TEXT']
+SLACK_FINISH_EXPIRE_MINUTES = ENV['SLACK_FINISH_EXPIRE_MINUTES']
 
 JOBCAN_CHANNEL_ID = ENV['JOBCAN_CHANNEL_ID']
 if JOBCAN_CHANNEL_ID.nil?
@@ -41,6 +49,14 @@ CHAT_COMMAND_URL = "#{SLACK_API_ROOT}/chat.command?token=#{token}"
 
 def set_status(profile)
   Net::HTTP.post_form(URI.parse(SET_PROFILE_URL), profile: profile.to_json)
+end
+
+# Get slack status_expiration
+#
+# @param minutes [Number] 0 means clear
+def slack_status_expiration(minutes)
+  m = minutes.to_i
+  m == 0 ? 0 : (Time.now + m*60).to_i
 end
 
 def set_status_back
@@ -63,23 +79,23 @@ end
 case ARGV[0]
 when 'start'
   set_status(
-    status_emoji: '',
-    status_text: '',
-    status_expiration: 0, # clear
+    status_emoji: SLACK_START_EMOJI,
+    status_text: SLACK_START_TEXT,
+    status_expiration: slack_status_expiration(SLACK_START_EXPIRE_MINUTES),
   )
   # set_status_back
   jobcan_touch
 when 'lunch'
   set_status(
-    status_emoji: ':lunch:',
-    status_text: '',
-    status_expiration: (Time.now + 1*60*60).to_i, # add 1 hour
+    status_emoji: SLACK_LUNCH_EMOJI,
+    status_text: SLACK_LUNCH_TEXT,
+    status_expiration: slack_status_expiration(SLACK_LUNCH_EXPIRE_MINUTES),
   )
 when 'finish'
   set_status(
-    status_emoji: ':taisya:',
+    status_emoji: SLACK_FINISH_EMOJI,
     status_text: SLACK_FINISH_TEXT,
-    status_expiration: 0, # clear
+    status_expiration: slack_status_expiration(SLACK_FINISH_EXPIRE_MINUTES),
   )
   # set_status_away
   jobcan_touch
