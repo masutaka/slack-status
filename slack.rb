@@ -5,7 +5,7 @@ require 'json'
 
 command = ARGV[0]
 if command.nil?
-  puts 'Usage: slack.rb { start | lunch | finish }'
+  puts 'Usage: slack.rb { start | lunch | finish | jobcan_touch }'
   exit 1
 end
 
@@ -100,7 +100,9 @@ when 'finish'
   )
   slack_set_dnd(now)
   jobcan_touch
+when 'jobcan_touch'
+  jobcan_touch
 else
-  puts 'Usage: slack.rb { start | lunch | finish }'
+  puts 'Usage: slack.rb { start | lunch | finish | jobcan_touch }'
   exit 1
 end
